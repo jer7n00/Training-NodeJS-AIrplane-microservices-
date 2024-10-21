@@ -1,0 +1,42 @@
+version: '3'
+services:
+  api-gateway:
+    build: ./api-gateway
+    ports:
+      - "4000:4000"
+    depends_on:
+      - airline
+      - flight
+      - passenger
+
+  airline:
+    build: ./airline-service
+    depends_on:
+      - mongodb
+
+  flight:
+    build: ./flight-service
+    depends_on:
+      - mongodb
+
+  passenger:
+    build: ./passenger-service
+    depends_on:
+      - mongodb
+
+  # mysql:
+  #   image: mysql:8
+  #   environment:
+  #     MYSQL_ROOT_PASSWORD: rootpassword
+  #     MYSQL_DATABASE: salesdb
+  #   volumes:
+  #     - mysql-data:/var/lib/mysql
+
+  mongodb:
+    image: mongo:4
+    volumes:
+      - mongodb-data:/data/db
+
+volumes:
+ # mysql-data:
+  mongodb-data:
